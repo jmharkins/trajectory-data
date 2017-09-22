@@ -1,0 +1,954 @@
+Last login: Sun Sep 17 20:28:21 on ttys000
+Sarahs-iMac:~ sarahcarlisle$ cd johannes-work
+Sarahs-iMac:johannes-work sarahcarlisle$ ls
+TW-post-take-on-01-19-17-with_JH_edits.ipynb
+dsfs
+jmharkins.github.io
+mouse-mover
+projection
+quilts
+rainier
+texture-warp
+traclus
+trajectory-data
+trajectory_distance
+Sarahs-iMac:johannes-work sarahcarlisle$ cd trajectory-data
+Sarahs-iMac:trajectory-data sarahcarlisle$ ls
+010_trip_labeled.csv	geolife-data		tarj-parse.py
+Sarahs-iMac:trajectory-data sarahcarlisle$ source activate traj_data
+
+
+CondaEnvironmentNotFoundError: Could not find environment: traj_data .
+You can list all discoverable environments with `conda info --envs`.
+
+
+Sarahs-iMac:trajectory-data sarahcarlisle$ conda info --envs
+# conda environments:
+#
+dtw                      /Users/sarahcarlisle/anaconda/envs/dtw
+pp-bm                    /Users/sarahcarlisle/anaconda/envs/pp-bm
+traj_dist                /Users/sarahcarlisle/anaconda/envs/traj_dist
+root                  *  /Users/sarahcarlisle/anaconda
+
+Sarahs-iMac:trajectory-data sarahcarlisle$ source activate traj_dist
+(traj_dist) Sarahs-iMac:trajectory-data sarahcarlisle$ IPython
+Python 2.7.12 |Anaconda 4.2.0 (x86_64)| (default, Jul  2 2016, 17:43:17) 
+Type "copyright", "credits" or "license" for more information.
+
+IPython 5.1.0 -- An enhanced Interactive Python.
+?         -> Introduction and overview of IPython's features.
+%quickref -> Quick reference.
+help      -> Python's own help system.
+object?   -> Details about 'object', use 'object??' for extra details.
+
+In [1]: import pandas as pd
+
+In [2]: import numpy as np
+
+In [3]: tpoints = pd.read_csv('010_trip_labeled.csv')
+
+In [4]: tpoints.head(10)
+Out[4]: 
+   Unnamed: 0   latitude   longitude  height    days_total        date  \
+0           0  39.893397  116.313677    -777  39535.616944  2008-03-28   
+1           1  39.894178  116.318200    -777  39535.621296  2008-03-28   
+2           2  39.894505  116.321132    -777  39535.621690  2008-03-28   
+3           3  39.894953  116.326452    -777  39535.622373  2008-03-28   
+4           4  39.894600  116.332542    -777  39535.623056  2008-03-28   
+5           5  39.889622  116.337040    -777  39535.623738  2008-03-28   
+6           6  39.882090  116.338353    -777  39535.624421  2008-03-28   
+7           7  39.873873  116.338455    -777  39535.625116  2008-03-28   
+8           8  39.865182  116.338058    -777  39535.625799  2008-03-28   
+9           9  39.855403  116.337710    -777  39535.626482  2008-03-28   
+
+       time            record_dt  user  trans_trip trans_mode  
+0  14:48:24  2008-03-28 14:48:24    10         NaN        NaN  
+1  14:54:40  2008-03-28 14:54:40    10         1.0      train  
+2  14:55:14  2008-03-28 14:55:14    10         1.0      train  
+3  14:56:13  2008-03-28 14:56:13    10         1.0      train  
+4  14:57:12  2008-03-28 14:57:12    10         1.0      train  
+5  14:58:11  2008-03-28 14:58:11    10         1.0      train  
+6  14:59:10  2008-03-28 14:59:10    10         1.0      train  
+7  15:00:10  2008-03-28 15:00:10    10         1.0      train  
+8  15:01:09  2008-03-28 15:01:09    10         1.0      train  
+9  15:02:08  2008-03-28 15:02:08    10         1.0      train  
+
+In [5]: tpoints = pd.read_csv('010_trip_labeled.csv',index_col=0)
+
+In [6]: tpoints.head(10)
+Out[6]: 
+    latitude   longitude  height    days_total        date      time  \
+0  39.893397  116.313677    -777  39535.616944  2008-03-28  14:48:24   
+1  39.894178  116.318200    -777  39535.621296  2008-03-28  14:54:40   
+2  39.894505  116.321132    -777  39535.621690  2008-03-28  14:55:14   
+3  39.894953  116.326452    -777  39535.622373  2008-03-28  14:56:13   
+4  39.894600  116.332542    -777  39535.623056  2008-03-28  14:57:12   
+5  39.889622  116.337040    -777  39535.623738  2008-03-28  14:58:11   
+6  39.882090  116.338353    -777  39535.624421  2008-03-28  14:59:10   
+7  39.873873  116.338455    -777  39535.625116  2008-03-28  15:00:10   
+8  39.865182  116.338058    -777  39535.625799  2008-03-28  15:01:09   
+9  39.855403  116.337710    -777  39535.626482  2008-03-28  15:02:08   
+
+             record_dt  user  trans_trip trans_mode  
+0  2008-03-28 14:48:24    10         NaN        NaN  
+1  2008-03-28 14:54:40    10         1.0      train  
+2  2008-03-28 14:55:14    10         1.0      train  
+3  2008-03-28 14:56:13    10         1.0      train  
+4  2008-03-28 14:57:12    10         1.0      train  
+5  2008-03-28 14:58:11    10         1.0      train  
+6  2008-03-28 14:59:10    10         1.0      train  
+7  2008-03-28 15:00:10    10         1.0      train  
+8  2008-03-28 15:01:09    10         1.0      train  
+9  2008-03-28 15:02:08    10         1.0      train  
+
+In [7]: tpoints['time_delta'] = tpoints.record_dt - tpoints.groupby(['user','trans_trip']).re
+   ...: cord_dt.shift(1)
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+<ipython-input-7-5edcb9f6cb4b> in <module>()
+----> 1 tpoints['time_delta'] = tpoints.record_dt - tpoints.groupby(['user','trans_trip']).record_dt.shift(1)
+
+/Users/sarahcarlisle/anaconda/lib/python2.7/site-packages/pandas/core/ops.pyc in wrapper(left, right, name, na_op)
+    713                 lvalues = lvalues.values
+    714 
+--> 715         result = wrap_results(safe_na_op(lvalues, rvalues))
+    716         return construct_result(
+    717             left,
+
+/Users/sarahcarlisle/anaconda/lib/python2.7/site-packages/pandas/core/ops.pyc in safe_na_op(lvalues, rvalues)
+    684                 if is_object_dtype(lvalues):
+    685                     return _algos.arrmap_object(lvalues,
+--> 686                                                 lambda x: op(x, rvalues))
+    687             raise
+    688 
+
+pandas/src/algos_common_helper.pxi in pandas.algos.arrmap_object (pandas/algos.c:46681)()
+
+/Users/sarahcarlisle/anaconda/lib/python2.7/site-packages/pandas/core/ops.pyc in <lambda>(x)
+    684                 if is_object_dtype(lvalues):
+    685                     return _algos.arrmap_object(lvalues,
+--> 686                                                 lambda x: op(x, rvalues))
+    687             raise
+    688 
+
+TypeError: unsupported operand type(s) for -: 'str' and 'float'
+
+In [8]: tpoints = pd.read_csv('010_trip_labeled.csv',index_col=0,parse_dates=['record_dt','da
+   ...: te'])
+
+In [9]: tpoints['time_delta'] = tpoints.record_dt - tpoints.groupby(['user','trans_trip']).re
+   ...: cord_dt.shift(1)
+
+In [10]: tpoints.head(10)
+Out[10]: 
+    latitude   longitude  height    days_total       date      time  \
+0  39.893397  116.313677    -777  39535.616944 2008-03-28  14:48:24   
+1  39.894178  116.318200    -777  39535.621296 2008-03-28  14:54:40   
+2  39.894505  116.321132    -777  39535.621690 2008-03-28  14:55:14   
+3  39.894953  116.326452    -777  39535.622373 2008-03-28  14:56:13   
+4  39.894600  116.332542    -777  39535.623056 2008-03-28  14:57:12   
+5  39.889622  116.337040    -777  39535.623738 2008-03-28  14:58:11   
+6  39.882090  116.338353    -777  39535.624421 2008-03-28  14:59:10   
+7  39.873873  116.338455    -777  39535.625116 2008-03-28  15:00:10   
+8  39.865182  116.338058    -777  39535.625799 2008-03-28  15:01:09   
+9  39.855403  116.337710    -777  39535.626482 2008-03-28  15:02:08   
+
+            record_dt  user  trans_trip trans_mode  time_delta  
+0 2008-03-28 14:48:24    10         NaN        NaN         NaT  
+1 2008-03-28 14:54:40    10         1.0      train         NaT  
+2 2008-03-28 14:55:14    10         1.0      train    00:00:34  
+3 2008-03-28 14:56:13    10         1.0      train    00:00:59  
+4 2008-03-28 14:57:12    10         1.0      train    00:00:59  
+5 2008-03-28 14:58:11    10         1.0      train    00:00:59  
+6 2008-03-28 14:59:10    10         1.0      train    00:00:59  
+7 2008-03-28 15:00:10    10         1.0      train    00:01:00  
+8 2008-03-28 15:01:09    10         1.0      train    00:00:59  
+9 2008-03-28 15:02:08    10         1.0      train    00:00:59  
+
+In [11]: tpoints.time_delta.value_counts()
+Out[11]: 
+00:00:01    464596
+00:00:02     54224
+00:00:15      6465
+00:00:59      3117
+00:00:14      1745
+00:01:00       692
+00:00:03       465
+00:01:01       228
+00:00:04       202
+00:00:05       170
+00:00:17       115
+00:00:06       104
+00:00:57        77
+00:00:16        62
+00:00:13        53
+00:00:58        52
+00:00:10        49
+00:00:07        43
+00:00:12        38
+00:00:08        37
+00:00:09        26
+00:00:46        24
+00:00:45        23
+00:00:33        22
+00:00:22        21
+00:01:06        20
+00:00:52        19
+00:00:21        19
+00:00:51        18
+00:00:50        17
+             ...  
+08:08:10         1
+00:27:34         1
+00:22:20         1
+00:17:59         1
+00:18:03         1
+00:38:22         1
+00:15:43         1
+00:17:55         1
+00:02:44         1
+00:09:53         1
+00:21:30         1
+00:17:49         1
+00:04:23         1
+00:02:34         1
+01:41:27         1
+00:17:56         1
+00:18:12         1
+00:03:40         1
+00:07:41         1
+00:15:17         1
+00:45:27         1
+00:04:20         1
+00:05:06         1
+00:05:08         1
+02:33:15         1
+00:02:41         1
+00:06:32         1
+00:18:09         1
+00:26:51         1
+00:03:39         1
+Name: time_delta, dtype: int64
+
+In [12]: tpoints.groupby(['trip_trans']).time_delta.max().value_counts()
+---------------------------------------------------------------------------
+KeyError                                  Traceback (most recent call last)
+<ipython-input-12-aac7da1a36cb> in <module>()
+----> 1 tpoints.groupby(['trip_trans']).time_delta.max().value_counts()
+
+/Users/sarahcarlisle/anaconda/lib/python2.7/site-packages/pandas/core/generic.pyc in groupby(self, by, axis, level, as_index, sort, group_keys, squeeze, **kwargs)
+   3989         return groupby(self, by=by, axis=axis, level=level, as_index=as_index,
+   3990                        sort=sort, group_keys=group_keys, squeeze=squeeze,
+-> 3991                        **kwargs)
+   3992 
+   3993     def asfreq(self, freq, method=None, how=None, normalize=False):
+
+/Users/sarahcarlisle/anaconda/lib/python2.7/site-packages/pandas/core/groupby.pyc in groupby(obj, by, **kwds)
+   1509         raise TypeError('invalid type: %s' % type(obj))
+   1510 
+-> 1511     return klass(obj, by, **kwds)
+   1512 
+   1513 
+
+/Users/sarahcarlisle/anaconda/lib/python2.7/site-packages/pandas/core/groupby.pyc in __init__(self, obj, keys, axis, level, grouper, exclusions, selection, as_index, sort, group_keys, squeeze, **kwargs)
+    368                                                     level=level,
+    369                                                     sort=sort,
+--> 370                                                     mutated=self.mutated)
+    371 
+    372         self.obj = obj
+
+/Users/sarahcarlisle/anaconda/lib/python2.7/site-packages/pandas/core/groupby.pyc in _get_grouper(obj, key, axis, level, sort, mutated)
+   2460 
+   2461         elif is_in_axis(gpr):  # df.groupby('name')
+-> 2462             in_axis, name, gpr = True, gpr, obj[gpr]
+   2463             exclusions.append(name)
+   2464         elif isinstance(gpr, Grouper) and gpr.key is not None:
+
+/Users/sarahcarlisle/anaconda/lib/python2.7/site-packages/pandas/core/frame.pyc in __getitem__(self, key)
+   2057             return self._getitem_multilevel(key)
+   2058         else:
+-> 2059             return self._getitem_column(key)
+   2060 
+   2061     def _getitem_column(self, key):
+
+/Users/sarahcarlisle/anaconda/lib/python2.7/site-packages/pandas/core/frame.pyc in _getitem_column(self, key)
+   2064         # get column
+   2065         if self.columns.is_unique:
+-> 2066             return self._get_item_cache(key)
+   2067 
+   2068         # duplicate columns & possible reduce dimensionality
+
+/Users/sarahcarlisle/anaconda/lib/python2.7/site-packages/pandas/core/generic.pyc in _get_item_cache(self, item)
+   1384         res = cache.get(item)
+   1385         if res is None:
+-> 1386             values = self._data.get(item)
+   1387             res = self._box_item_values(item, values)
+   1388             cache[item] = res
+
+/Users/sarahcarlisle/anaconda/lib/python2.7/site-packages/pandas/core/internals.pyc in get(self, item, fastpath)
+   3541 
+   3542             if not isnull(item):
+-> 3543                 loc = self.items.get_loc(item)
+   3544             else:
+   3545                 indexer = np.arange(len(self.items))[isnull(self.items)]
+
+/Users/sarahcarlisle/anaconda/lib/python2.7/site-packages/pandas/indexes/base.pyc in get_loc(self, key, method, tolerance)
+   2134                 return self._engine.get_loc(key)
+   2135             except KeyError:
+-> 2136                 return self._engine.get_loc(self._maybe_cast_indexer(key))
+   2137 
+   2138         indexer = self.get_indexer([key], method=method, tolerance=tolerance)
+
+pandas/index.pyx in pandas.index.IndexEngine.get_loc (pandas/index.c:4433)()
+
+pandas/index.pyx in pandas.index.IndexEngine.get_loc (pandas/index.c:4279)()
+
+pandas/src/hashtable_class_helper.pxi in pandas.hashtable.PyObjectHashTable.get_item (pandas/hashtable.c:13742)()
+
+pandas/src/hashtable_class_helper.pxi in pandas.hashtable.PyObjectHashTable.get_item (pandas/hashtable.c:13696)()
+
+KeyError: 'trip_trans'
+
+In [13]: tpoints.groupby(['trans_trip']).time_delta.max().value_counts()
+Out[13]: 
+00:00:02    103
+00:00:03     12
+00:00:04     10
+00:00:45      6
+00:01:01      6
+00:00:52      6
+00:00:55      6
+00:01:00      5
+00:00:01      5
+00:01:04      5
+00:00:48      5
+00:00:58      4
+00:00:54      4
+00:01:05      4
+00:17:43      4
+00:00:51      4
+00:00:14      3
+00:01:14      3
+00:17:50      3
+00:01:12      3
+00:01:03      3
+00:01:41      3
+00:00:56      3
+00:01:13      3
+00:01:33      3
+00:01:32      3
+00:00:19      3
+00:17:46      3
+00:00:50      3
+00:01:42      3
+           ... 
+00:00:17      1
+00:20:14      1
+00:01:11      1
+00:02:16      1
+00:18:10      1
+00:02:37      1
+00:17:58      1
+00:17:38      1
+00:17:35      1
+00:17:27      1
+00:00:53      1
+00:01:44      1
+00:00:42      1
+00:11:59      1
+00:00:44      1
+00:03:49      1
+00:03:21      1
+00:01:59      1
+00:26:51      1
+00:18:03      1
+00:04:05      1
+00:17:39      1
+00:17:59      1
+00:01:22      1
+00:00:23      1
+00:02:55      1
+00:00:31      1
+00:01:52      1
+00:06:43      1
+01:31:51      1
+Name: time_delta, dtype: int64
+
+In [14]: tpoints.groupby(['trans_trip']).time_delta.agg(['max','count'])
+Out[14]: 
+                max  count
+trans_trip                
+1.0        00:01:36     68
+2.0        00:01:27    378
+3.0        01:31:51    800
+4.0        08:08:10    715
+5.0        03:16:41    315
+6.0        01:56:39    501
+7.0        00:01:00      9
+8.0        00:01:01    438
+9.0        00:01:00     11
+10.0       00:01:54      8
+11.0       00:01:00      8
+12.0       00:01:01    421
+13.0       00:01:00      6
+14.0       00:01:01      5
+15.0       00:03:24    562
+16.0       00:00:19    174
+17.0       00:02:35    265
+18.0       00:26:51    610
+19.0       00:01:01     15
+20.0       00:01:00      8
+21.0       00:01:01     10
+22.0       00:00:03    383
+23.0       00:00:03   1616
+24.0       00:38:22  36193
+25.0       00:01:32    107
+26.0       00:00:03   1924
+27.0       00:00:03   2166
+28.0       00:15:17   1660
+29.0       00:13:21   2620
+30.0       00:10:51   1022
+...             ...    ...
+404.0      00:00:43   2027
+405.0      00:00:02    137
+406.0      00:00:02    707
+407.0      00:17:41    627
+408.0      00:02:31    663
+409.0      00:01:06    335
+410.0      00:00:02    161
+411.0      00:00:03    132
+412.0      00:00:02    256
+413.0      00:02:44   2820
+414.0      00:00:02    451
+415.0      00:00:02    507
+416.0      00:02:36   3477
+417.0      00:01:23    952
+418.0      00:00:56    407
+419.0      00:01:57    433
+420.0      00:12:32   1000
+421.0      00:00:04   1052
+422.0      00:01:49    109
+423.0      00:00:32    205
+424.0      00:00:52    484
+425.0      00:00:50   2317
+426.0      00:00:02    696
+427.0      00:01:42    140
+428.0      00:00:22    109
+429.0      00:00:58    127
+430.0      00:17:49    624
+431.0      00:00:04   2164
+432.0      00:00:03     82
+433.0      00:01:32    443
+
+[432 rows x 2 columns]
+
+In [15]: np.radians
+Out[15]: <ufunc 'radians'>
+
+In [16]: np.radians(tpoints[['latitude','longitude']])
+Out[16]: 
+      latitude  longitude
+0     0.696271   2.030057
+1     0.696285   2.030136
+2     0.696290   2.030187
+3     0.696298   2.030280
+4     0.696292   2.030386
+5     0.696205   2.030464
+6     0.696074   2.030487
+7     0.695930   2.030489
+8     0.695779   2.030482
+9     0.695608   2.030476
+10    0.695418   2.030418
+11    0.695192   2.030309
+12    0.694931   2.030219
+13    0.694666   2.030132
+14    0.694386   2.030023
+15    0.694107   2.029912
+16    0.693847   2.029817
+17    0.693670   2.029885
+18    0.693542   2.029971
+19    0.693395   2.030076
+20    0.693325   2.030153
+21    0.693260   2.030228
+22    0.693246   2.030244
+23    0.693246   2.030244
+24    0.693246   2.030244
+25    0.693246   2.030244
+26    0.693246   2.030244
+27    0.693246   2.030244
+28    0.693246   2.030244
+29    0.693246   2.030244
+...        ...        ...
+3666  0.697985   2.030328
+3667  0.697986   2.030327
+3668  0.697986   2.030325
+3669  0.697986   2.030324
+3670  0.697986   2.030323
+3671  0.697985   2.030321
+3672  0.697985   2.030319
+3673  0.697985   2.030318
+3674  0.697985   2.030314
+3675  0.697985   2.030312
+3676  0.697986   2.030310
+3677  0.697986   2.030308
+3678  0.697985   2.030305
+3679  0.697985   2.030303
+3680  0.697985   2.030301
+3681  0.697985   2.030300
+3682  0.697985   2.030298
+3683  0.697985   2.030295
+3684  0.697985   2.030294
+3685  0.697985   2.030289
+3686  0.697985   2.030287
+3687  0.697985   2.030286
+3688  0.697985   2.030284
+3689  0.697985   2.030282
+3690  0.697986   2.030281
+3691  0.697986   2.030278
+3692  0.697986   2.030277
+3693  0.697986   2.030277
+3694  0.697986   2.030276
+3695  0.697986   2.030276
+
+[539819 rows x 2 columns]
+
+In [17]: rad_coord = np.radians(tpoints[['latitude','longitude']])
+
+In [18]: prev_rad_coord = np.radians(tpoints.groupby('trip_trans').shift(1)[['latitude','long
+    ...: itude']])
+---------------------------------------------------------------------------
+KeyError                                  Traceback (most recent call last)
+<ipython-input-18-446374c0b5f0> in <module>()
+----> 1 prev_rad_coord = np.radians(tpoints.groupby('trip_trans').shift(1)[['latitude','longitude']])
+
+/Users/sarahcarlisle/anaconda/lib/python2.7/site-packages/pandas/core/generic.pyc in groupby(self, by, axis, level, as_index, sort, group_keys, squeeze, **kwargs)
+   3989         return groupby(self, by=by, axis=axis, level=level, as_index=as_index,
+   3990                        sort=sort, group_keys=group_keys, squeeze=squeeze,
+-> 3991                        **kwargs)
+   3992 
+   3993     def asfreq(self, freq, method=None, how=None, normalize=False):
+
+/Users/sarahcarlisle/anaconda/lib/python2.7/site-packages/pandas/core/groupby.pyc in groupby(obj, by, **kwds)
+   1509         raise TypeError('invalid type: %s' % type(obj))
+   1510 
+-> 1511     return klass(obj, by, **kwds)
+   1512 
+   1513 
+
+/Users/sarahcarlisle/anaconda/lib/python2.7/site-packages/pandas/core/groupby.pyc in __init__(self, obj, keys, axis, level, grouper, exclusions, selection, as_index, sort, group_keys, squeeze, **kwargs)
+    368                                                     level=level,
+    369                                                     sort=sort,
+--> 370                                                     mutated=self.mutated)
+    371 
+    372         self.obj = obj
+
+/Users/sarahcarlisle/anaconda/lib/python2.7/site-packages/pandas/core/groupby.pyc in _get_grouper(obj, key, axis, level, sort, mutated)
+   2460 
+   2461         elif is_in_axis(gpr):  # df.groupby('name')
+-> 2462             in_axis, name, gpr = True, gpr, obj[gpr]
+   2463             exclusions.append(name)
+   2464         elif isinstance(gpr, Grouper) and gpr.key is not None:
+
+/Users/sarahcarlisle/anaconda/lib/python2.7/site-packages/pandas/core/frame.pyc in __getitem__(self, key)
+   2057             return self._getitem_multilevel(key)
+   2058         else:
+-> 2059             return self._getitem_column(key)
+   2060 
+   2061     def _getitem_column(self, key):
+
+/Users/sarahcarlisle/anaconda/lib/python2.7/site-packages/pandas/core/frame.pyc in _getitem_column(self, key)
+   2064         # get column
+   2065         if self.columns.is_unique:
+-> 2066             return self._get_item_cache(key)
+   2067 
+   2068         # duplicate columns & possible reduce dimensionality
+
+/Users/sarahcarlisle/anaconda/lib/python2.7/site-packages/pandas/core/generic.pyc in _get_item_cache(self, item)
+   1384         res = cache.get(item)
+   1385         if res is None:
+-> 1386             values = self._data.get(item)
+   1387             res = self._box_item_values(item, values)
+   1388             cache[item] = res
+
+/Users/sarahcarlisle/anaconda/lib/python2.7/site-packages/pandas/core/internals.pyc in get(self, item, fastpath)
+   3541 
+   3542             if not isnull(item):
+-> 3543                 loc = self.items.get_loc(item)
+   3544             else:
+   3545                 indexer = np.arange(len(self.items))[isnull(self.items)]
+
+/Users/sarahcarlisle/anaconda/lib/python2.7/site-packages/pandas/indexes/base.pyc in get_loc(self, key, method, tolerance)
+   2134                 return self._engine.get_loc(key)
+   2135             except KeyError:
+-> 2136                 return self._engine.get_loc(self._maybe_cast_indexer(key))
+   2137 
+   2138         indexer = self.get_indexer([key], method=method, tolerance=tolerance)
+
+pandas/index.pyx in pandas.index.IndexEngine.get_loc (pandas/index.c:4433)()
+
+pandas/index.pyx in pandas.index.IndexEngine.get_loc (pandas/index.c:4279)()
+
+pandas/src/hashtable_class_helper.pxi in pandas.hashtable.PyObjectHashTable.get_item (pandas/hashtable.c:13742)()
+
+pandas/src/hashtable_class_helper.pxi in pandas.hashtable.PyObjectHashTable.get_item (pandas/hashtable.c:13696)()
+
+KeyError: 'trip_trans'
+
+In [19]: prev_rad_coord = np.radians(tpoints.groupby('trans_trip').shift(1)[['latitude','long
+    ...: itude']])
+
+In [20]: d_lat = rad_coord['latitude'] - prev_rad_coord['latitude']
+
+In [21]: d_long = rad_coord['longitude'] - prev_rad_coord['longitude']
+
+In [22]: %paste
+    # haversine formula 
+    lat1 = prev_rad_coord['latitude']
+    lon1 = prev_rad_coord['longitude']
+    lat2 = rad_coord['latitude']
+    lon2 = rad_coord['longitude']
+    dlon = lon2 - lon1 
+    dlat = lat2 - lat1 
+    a = np.sin(dlat/2)**2 + np.cos(lat1) * np.cos(lat2) * np.sin(dlon/2)**2
+    c = 2 * np.arcsin(np.sqrt(a))
+## -- End pasted text --
+
+In [23]: delta_dist = c * r
+---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+<ipython-input-23-94794a8f3ac4> in <module>()
+----> 1 delta_dist = c * r
+
+NameError: name 'r' is not defined
+
+In [24]: delta_dist = c * 6371
+
+In [25]: delta_dist.head(10)
+Out[25]: 
+0         NaN
+1         NaN
+2    0.252764
+3    0.456583
+4    0.521027
+5    0.673539
+6    0.844980
+7    0.913730
+8    0.966989
+9    1.087781
+dtype: float64
+
+In [26]: tpoints['delta_dist'] = delta_dist 
+
+In [27]: tpoints.head(10)
+Out[27]: 
+    latitude   longitude  height    days_total       date      time  \
+0  39.893397  116.313677    -777  39535.616944 2008-03-28  14:48:24   
+1  39.894178  116.318200    -777  39535.621296 2008-03-28  14:54:40   
+2  39.894505  116.321132    -777  39535.621690 2008-03-28  14:55:14   
+3  39.894953  116.326452    -777  39535.622373 2008-03-28  14:56:13   
+4  39.894600  116.332542    -777  39535.623056 2008-03-28  14:57:12   
+5  39.889622  116.337040    -777  39535.623738 2008-03-28  14:58:11   
+6  39.882090  116.338353    -777  39535.624421 2008-03-28  14:59:10   
+7  39.873873  116.338455    -777  39535.625116 2008-03-28  15:00:10   
+8  39.865182  116.338058    -777  39535.625799 2008-03-28  15:01:09   
+9  39.855403  116.337710    -777  39535.626482 2008-03-28  15:02:08   
+
+            record_dt  user  trans_trip trans_mode  time_delta  delta_dist  
+0 2008-03-28 14:48:24    10         NaN        NaN         NaT         NaN  
+1 2008-03-28 14:54:40    10         1.0      train         NaT         NaN  
+2 2008-03-28 14:55:14    10         1.0      train    00:00:34    0.252764  
+3 2008-03-28 14:56:13    10         1.0      train    00:00:59    0.456583  
+4 2008-03-28 14:57:12    10         1.0      train    00:00:59    0.521027  
+5 2008-03-28 14:58:11    10         1.0      train    00:00:59    0.673539  
+6 2008-03-28 14:59:10    10         1.0      train    00:00:59    0.844980  
+7 2008-03-28 15:00:10    10         1.0      train    00:01:00    0.913730  
+8 2008-03-28 15:01:09    10         1.0      train    00:00:59    0.966989  
+9 2008-03-28 15:02:08    10         1.0      train    00:00:59    1.087781  
+
+In [28]: tpoints.groupby(['trans_trip','trans_mode']).delta_dist.sum().groupby(level=1).mean(
+    ...: )
+Out[28]: 
+trans_mode
+airplane    667.797100
+bus          14.875302
+car          20.767756
+subway        7.442353
+taxi          5.766413
+train       244.048856
+walk          0.443779
+Name: delta_dist, dtype: float64
+
+In [29]: tpoints.groupby(['trans_trip','trans_mode'])['delta_dist','time_delta'].sum().groupb
+    ...: y(level=1).mean()
+Out[29]: 
+            delta_dist
+trans_mode            
+airplane    667.797100
+bus          14.875302
+car          20.767756
+subway        7.442353
+taxi          5.766413
+train       244.048856
+walk          0.443779
+
+In [30]: 
+
+In [30]: 
+
+In [30]: %paste
+    tpoints.groupby(['trans_trip','trans_mode'])[['delta_dist','time_delta']].sum()
+            .assign(avg_speed = lambda x. x.delta_dist / x.time_delta)
+            .groupby(level=1).mean()
+
+## -- End pasted text --
+  File "<ipython-input-30-e97a06fd861f>", line 2
+    .assign(avg_speed = lambda x. x.delta_dist / x.time_delta)
+    ^
+IndentationError: unexpected indent
+
+
+In [31]: %paste
+    (tpoints.groupby(['trans_trip','trans_mode'])[['delta_dist','time_delta']].sum()
+            .assign(avg_speed = lambda x. x.delta_dist / x.time_delta)
+            .groupby(level=1).mean())
+
+## -- End pasted text --
+  File "<ipython-input-31-4a36d8d1498b>", line 2
+    .assign(avg_speed = lambda x. x.delta_dist / x.time_delta)
+                                ^
+SyntaxError: invalid syntax
+
+
+In [32]: %paste
+    (tpoints.groupby(['trans_trip','trans_mode'])[['delta_dist','time_delta']].sum()
+            .assign(avg_speed = lambda x: x.delta_dist / x.time_delta)
+            .groupby(level=1).mean())
+
+## -- End pasted text --
+---------------------------------------------------------------------------
+AttributeError                            Traceback (most recent call last)
+<ipython-input-32-de0a20145fde> in <module>()
+      1 (tpoints.groupby(['trans_trip','trans_mode'])[['delta_dist','time_delta']].sum()
+----> 2         .assign(avg_speed = lambda x: x.delta_dist / x.time_delta)
+      3         .groupby(level=1).mean())
+
+/Users/sarahcarlisle/anaconda/lib/python2.7/site-packages/pandas/core/frame.pyc in assign(self, **kwargs)
+   2583         results = {}
+   2584         for k, v in kwargs.items():
+-> 2585             results[k] = com._apply_if_callable(v, data)
+   2586 
+   2587         # ... and then assign
+
+/Users/sarahcarlisle/anaconda/lib/python2.7/site-packages/pandas/core/common.pyc in _apply_if_callable(maybe_callable, obj, **kwargs)
+    451     """
+    452     if callable(maybe_callable):
+--> 453         return maybe_callable(obj, **kwargs)
+    454     return maybe_callable
+    455 
+
+<ipython-input-32-de0a20145fde> in <lambda>(x)
+      1 (tpoints.groupby(['trans_trip','trans_mode'])[['delta_dist','time_delta']].sum()
+----> 2         .assign(avg_speed = lambda x: x.delta_dist / x.time_delta)
+      3         .groupby(level=1).mean())
+
+/Users/sarahcarlisle/anaconda/lib/python2.7/site-packages/pandas/core/generic.pyc in __getattr__(self, name)
+   2742             if name in self._info_axis:
+   2743                 return self[name]
+-> 2744             return object.__getattribute__(self, name)
+   2745 
+   2746     def __setattr__(self, name, value):
+
+AttributeError: 'DataFrame' object has no attribute 'time_delta'
+
+In [33]: %paste
+tpoints.groupby(['trans_trip','trans_mode'])[['delta_dist','time_delta']].sum()
+
+## -- End pasted text --
+Out[33]: 
+                        delta_dist
+trans_trip trans_mode             
+1.0        train         62.604343
+2.0        train        409.116643
+3.0        train       1071.454161
+4.0        train       1588.784518
+5.0        train        772.508295
+6.0        train        550.865975
+7.0        taxi           4.997941
+8.0        train        522.840204
+9.0        taxi           6.031303
+10.0       walk           0.348090
+11.0       taxi           5.266303
+12.0       train        459.923967
+13.0       taxi           4.282446
+14.0       walk           0.273843
+15.0       walk           0.755419
+16.0       taxi           1.073950
+17.0       bus            7.326511
+18.0       train        701.915591
+19.0       walk           0.477145
+20.0       taxi           4.443831
+21.0       walk           0.550032
+22.0       taxi           4.902121
+23.0       train         28.945689
+24.0       train        698.969602
+25.0       walk           0.178496
+26.0       taxi          52.008667
+27.0       taxi          51.622861
+28.0       train        661.816623
+29.0       train       1035.750843
+30.0       train        370.606117
+...                            ...
+404.0      train        114.939556
+405.0      walk           0.278782
+406.0      taxi           6.746022
+407.0      train        112.037247
+408.0      taxi           4.125824
+409.0      subway         5.643547
+410.0      walk           0.321817
+411.0      walk           0.293199
+412.0      walk           0.575545
+413.0      bus           38.961981
+414.0      walk           0.742179
+415.0      walk           0.748718
+416.0      bus           39.487079
+417.0      taxi           8.241492
+418.0      subway         5.789977
+419.0      taxi           4.635109
+420.0      train        113.474883
+421.0      train         38.387032
+422.0      taxi           1.973393
+423.0      walk           0.525828
+424.0      subway         8.683413
+425.0      subway        44.758794
+426.0      taxi           5.804104
+427.0      walk           0.390810
+428.0      taxi           1.031263
+429.0      taxi           1.356128
+430.0      train        111.960017
+431.0      bus           23.418482
+432.0      walk           0.178086
+433.0      taxi           5.347427
+
+[432 rows x 1 columns]
+
+In [34]: tpoints.columns
+Out[34]: 
+Index([u'latitude', u'longitude', u'height', u'days_total', u'date', u'time',
+       u'record_dt', u'user', u'trans_trip', u'trans_mode', u'time_delta',
+       u'delta_dist'],
+      dtype='object')
+
+In [35]: tpoints['point_tdelta'] = tpoints['time_delta']
+
+In [36]: tpoints['point_tdelta'] = tpoints['time_delta'].seconds()
+---------------------------------------------------------------------------
+AttributeError                            Traceback (most recent call last)
+<ipython-input-36-13a0414bc082> in <module>()
+----> 1 tpoints['point_tdelta'] = tpoints['time_delta'].seconds()
+
+/Users/sarahcarlisle/anaconda/lib/python2.7/site-packages/pandas/core/generic.pyc in __getattr__(self, name)
+   2742             if name in self._info_axis:
+   2743                 return self[name]
+-> 2744             return object.__getattribute__(self, name)
+   2745 
+   2746     def __setattr__(self, name, value):
+
+AttributeError: 'Series' object has no attribute 'seconds'
+
+In [37]: tpoints['point_tdelta'] = tpoints['time_delta'].seconds
+---------------------------------------------------------------------------
+AttributeError                            Traceback (most recent call last)
+<ipython-input-37-80b1e3551ee1> in <module>()
+----> 1 tpoints['point_tdelta'] = tpoints['time_delta'].seconds
+
+/Users/sarahcarlisle/anaconda/lib/python2.7/site-packages/pandas/core/generic.pyc in __getattr__(self, name)
+   2742             if name in self._info_axis:
+   2743                 return self[name]
+-> 2744             return object.__getattribute__(self, name)
+   2745 
+   2746     def __setattr__(self, name, value):
+
+AttributeError: 'Series' object has no attribute 'seconds'
+
+In [38]: tpoints.time_delta.head()
+Out[38]: 
+0        NaT
+1        NaT
+2   00:00:34
+3   00:00:59
+4   00:00:59
+Name: time_delta, dtype: timedelta64[ns]
+
+In [39]: tpoints['point_tdelta'] = tpoints['time_delta'].dt.seconds
+
+In [40]: %paste
+    (tpoints.groupby(['trans_trip','trans_mode'])[['delta_dist','point_tdelta']].sum()
+            .assign(avg_speed = lambda x: x.delta_dist / (x.point_tdelta / 60))
+            .groupby(level=1).mean())
+
+## -- End pasted text --
+Out[40]: 
+            delta_dist  point_tdelta  avg_speed
+trans_mode                                     
+airplane    667.797100   4644.000000   4.661558
+bus          14.875302   1473.823529   0.461643
+car          20.767756   2836.000000   0.439374
+subway        7.442353    621.851064   0.695993
+taxi          5.766413    885.947917   0.437252
+train       244.048856  10014.444444   2.326635
+walk          0.443779    345.953947   0.085886
+
+In [41]: points_speed = tpoints.delta_dist / (tpoints.time_delta.dt.seconds /60)
+
+In [42]: points_speed = tpoints.delta_dist / (tpoints.point_tdelta /60)
+
+In [43]: points_speed = tpoints.delta_dist / (tpoints.point_tdelta /60.0)
+
+In [44]: points_speed.max()
+Out[44]: inf
+
+In [45]: points_speed.loc[~np.isinf(points_speed)].max()
+Out[45]: 11.562618326049705
+
+In [46]: points_speed = tpoints.delta_dist / (tpoints.point_tdelta) * 3600
+
+In [47]: points_speed.loc[~np.isinf(points_speed)].max()
+Out[47]: 693.75709956298238
+
+In [48]: %paste
+  (tpoints.groupby(['trans_trip','trans_mode'])[['delta_dist','point_tdelta']].sum()
+            .assign(avg_speed = lambda x: x.delta_dist / (x.point_tdelta) * 3600)
+            .groupby(level=1).mean())
+
+## -- End pasted text --
+Out[48]: 
+            delta_dist  point_tdelta   avg_speed
+trans_mode                                      
+airplane    667.797100   4644.000000  279.693507
+bus          14.875302   1473.823529   27.698609
+car          20.767756   2836.000000   26.362455
+subway        7.442353    621.851064   41.759594
+taxi          5.766413    885.947917   26.235102
+train       244.048856  10014.444444  139.598099
+walk          0.443779    345.953947    5.153163
+
+In [49]: %paste
+avg_tmodes = (tpoints.groupby(['trans_trip','trans_mode'])[['delta_dist','point_tdelta']].sum()
+              .assign(avg_speed = lambda x: x.delta_dist / (x.point_tdelta) * 3600)
+              .groupby(level=1).mean())
+
+## -- End pasted text --
+
+In [50]: avg_tmodes.point_tdelta / 60.0
+Out[50]: 
+trans_mode
+airplane     77.400000
+bus          24.563725
+car          47.266667
+subway       10.364184
+taxi         14.765799
+train       166.907407
+walk          5.765899
+Name: point_tdelta, dtype: float64
+
+In [51]: 
