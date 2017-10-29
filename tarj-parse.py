@@ -62,9 +62,4 @@ for ldirs in label_dirs[:1]:
         traj_df.loc[has_trip,'trans_mode'] = traj_df.loc[has_trip].apply(lambda x: trip_trans.loc[x.trans_trip,'Transportation Mode'],axis=1)
         all_traj = pd.concat([all_traj,traj_df])
 
-    #if traj_df['date'].isin(trip_a_dates).any():
-    #  match_paths.append(trajpath+tf)
-
-#    if traj_df['date'].unique().isin(trip_a_dates).any():
-#      traj_df['user'] = ldirs
-#      pd.concat()
+all_traj.to_csv('_'.join(str(label_dirs),'trip','labeled.csv'))
